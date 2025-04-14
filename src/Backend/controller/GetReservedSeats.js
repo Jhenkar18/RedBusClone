@@ -1,0 +1,41 @@
+const express = require('express');
+const router = express.Router();
+const connection = require('../mysql/mysql.js'); // Adjust the path if needed
+
+const getreservedseats= async (req, res) => {
+    const { busid ,date,tripid } = req.query;
+
+    if (!busid || !date) {
+        return res.status(400).json({ message: 'Bus ID is required' });
+    }
+
+    try {
+        
+        const query = `
+        SELECT s.seat_number 
+        FROM Seats s
+        JOIN Trips t ON s.bus_id = t.bus_id
+        WHERE s.bus_id = ? 
+          AND t.trip_id = ?
+          AND DATE(t.departure_time) = ?
+          AND s.is_reserved = 1 
+          AND s.reservation_expiry > NOW();
+    `;
+       
+        const [rows] = await new Promise((resolve, reject) => {
+            connection.query(query, [busid ,tripid ,date ], (error, results) => {
+                if (error) return reject(error);
+                resolve([results]);
+            });
+        });
+
+        const reservedSeats = rows.map(row => row.seat_number);
+
+        res.json({ reservedSeats });
+    } catch (error) {
+        console.error('Error fetching reserved seats:', error);
+        res.status(500).json({ message: 'Internal Server Error', details: error.message });
+    }
+};
+
+module.exports = getreservedseats;
