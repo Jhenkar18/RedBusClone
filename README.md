@@ -72,3 +72,24 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 =======
 # RedBusClone
 >>>>>>> 83a5cc02a662b45d697a7f85736c46736ff44c33
+
+
+List Of Technologies Used 
+
+FrontEnd - HTML,CSS,React.js,TailWindCss
+BackEnd - Node.js,Express.js
+Db- MySQL
+
+To Run Project Locally Download Project From GitHub
+
+to Import the Node Modules
+
+NPM Install 
+
+TO Run the Backend 
+
+NPM Run Nodemon
+
+To Run THE FrontEnd
+
+Npm Run Start
